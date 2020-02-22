@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/axios/dist/axios.standalone.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/CryptoJS/components/hmac.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/url-template/url-template.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/apiGatewayCore/sigV4Client.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/apiGatewayCore/apiGatewayClient.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/apiGatewayCore/simpleHttpClient.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/lib/apiGatewayCore/utils.js"></script>
+<script type="text/javascript" src="build14/apiGateway-js-sdk/apigClient.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<!-- UI Reference toward https://codepen.io/chriscoyier/full/zqPBRG -->
+<div class="chat-output" id="chat-output">
+
+</div>
+
+<div class="chat-input">
+  <form action="#0" id="user-input-form">
+    <input type="text" id="user-input" class="user-input" placeholder="Talk to the bot.">
+  </form>
+</div>
+
+<script>
+  var apigClient = null;
+  var outputArea = $("#chat-output");
+  AWS.config.region = 'us-east-1';
+
+  function chatbotResponse(inputText) {
+
+    apigClient = apigClientFactory.newClient();
+    var params = {};
+    var body = {
+      "message": inputText,
+      "identityID": "wHye25HRqwe"
+    };
+    var additionalParams = {
+      headers: {
+        'x-api-key': 'jCHzTTsmFB3Jkduwsj8woamcHzXRyLlqdxFogBKb'
+      },
+      queryParams: {}
+    };
+    return apigClient.chatbotPost(params, body, additionalParams)
+      .then((result) => {
+        if (result.data == null) {
+          outputArea.append(`
+      <div class='user-message'>
+        <div class='message'>
+          null
+        </div>
+      </div>
+    `);
+          console.log("null");
+        } else {
+          outputArea.append(`
+      <div class='user-message'>
+        <div class='message'>
+          ${result.data.body}
+        </div>
+      </div>
+    `);
+          console.log(result.data.body);
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+
+  $("#user-input-form").on("submit", function (e) {
+    e.preventDefault();
+    var message = $("#user-input").val();
+    $("#user-input").va
+    outputArea.append(
+      `
+    <div class='bot-message'>
+      <div class='message'>
+        ${message}
+      </div>
+    </div>
+    `
+    );
+    setTimeout(chatbotResponse, 500, message);
+    $("#user-input").val("");
+  });
+</script>
+
+</html>
