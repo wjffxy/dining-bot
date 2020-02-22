@@ -7,7 +7,7 @@ http://awsproject666.s3-website-us-east-1.amazonaws.com/
 ## Student names and netid
 Yuqi Xiao netid: yx1812
 
-Jiafeng Wu netid: jw5751
+Jianfeng Wu netid: jw5751
 
 Junda Yin netid: jy2622 
 
